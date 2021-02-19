@@ -1,0 +1,225 @@
+@import "variables";
+@import "mixins";
+
+*{
+	padding:0;
+	margin: 0;
+}
+
+body{
+	background: color(background);
+	font-weight: 200;
+	font-family: calibri;
+}
+
+li{
+	list-style: none;
+}
+
+a,a:visited{
+	text-decoration: none;
+	color:color(text);
+}
+
+.input{
+	border:solid lightgrey 1px;
+	border-radius: 5px;
+	padding:3px 10px;
+	&::placeholder{
+		color:color(grey);
+	}
+}
+
+.btn{
+	@include theme(color(clear));
+	border:none;
+	border-radius:5px;
+	padding:5px;
+}
+
+.navbar{
+	@include flex(row,space-between);
+	@include theme(color(primary));
+	position: fixed;
+	top:0;
+	right:0;
+	left:0;
+	padding:0 1em;
+	z-index: 100;
+
+	.navbar-title{
+		width:60px;
+		height: auto;
+	}
+
+	.form{
+		@include flex;
+		max-width: 500px;
+		padding:20px 0px;
+		.search-input{
+			width:100%;
+		}
+	}
+	.nav-container{
+		@include flex(row,space-between); 
+	}
+	#{&}-nav{
+		@include flex(row,space-around);	
+	}
+	#{&}-toggler{
+		outline: transparent;
+		display: none;
+	}
+	.nav-item{
+		@include hover(color(primary),color(text),false);
+		padding:20px 10px;
+	}
+
+	@mixin bar{
+		display: block;
+		width:23px;
+		height: 1px;
+		background:color(text);
+		content:"";
+	}
+
+	@include media-under(devise(medium)){
+		
+		#{&}-nav{
+			@include flex(column);
+			position:absolute;
+			background:color(primary);
+			visibility: hidden;
+			width: 100vw;
+			height: 100vh;
+			top:100%;
+			left: 50%;
+			transform: translate(-50% ,-150%);
+			&.active{
+				@include transition(1s,transform);
+				transform: translate(-50% ,0%);
+				visibility: visible;
+			}
+		}
+
+		#{&}-toggler{
+			display: block;
+			border:none;
+			width:25px;
+			height: 25px;
+		}
+
+		#{&}-toggler-icon{
+			@include bar;
+			@include transition(0.5s);
+			position:relative;
+			margin-left: 2px;
+			border:none;
+			&::after{
+				@include bar;
+				position:absolute;
+				top:6px;
+			}
+			&::before{
+				@include bar;
+				position:absolute;
+				top:-6px;
+			}
+			&.active{
+				@include transition(0.5s);
+				transform:rotate(720deg);
+				background:transparent;
+				&::after{
+					@include transition(0.5s);
+					transform: translate( 0px, -6px) rotate(-45deg);
+				}
+				&::before{
+					@include transition(0.5s);
+					transform:translate( 0px, 6px) rotate(45deg);
+				}
+			}
+		}
+	}
+}
+
+.main{
+	@include flex(column);
+	margin-top:80px;
+	width: 100vw;
+	.article{
+		@include flex(row,flex-start);
+		align-items: flex-start;
+		margin-bottom:4em;
+		img{
+			width:90%;
+		}
+		.title{
+			font-size:180%;
+			color:lighten(color(text),15%);
+		}
+		.content{
+			flex:1.5;
+			text-align: center;
+			.video{
+				width:90%;
+			}
+			&:hover .content-text{
+				@include transition;
+				opacity: 1;
+				transform:translateY(0px);
+			}
+			.content-text{
+				@include transition;
+				display: block;
+				margin:auto;
+				transform:translateY(-50px);
+				opacity: 0;
+				width:90%;
+				padding:10px 0px;
+				background:color(secondary);
+			}
+		}
+		.text{
+			flex:1;
+			margin:30px;
+		}
+	}
+
+	@include media-under(devise(medium)){
+		& .article{
+			@include flex(column);
+			.content{
+				width:90%;
+			}
+			&.reverse{
+				@include flex(column-reverse);
+			}
+			.text{
+				margin:10px;
+			}
+		}
+	}
+}
+
+.footer{
+	@include flex(column);
+	@include theme(color(dark));
+	padding:0 2em 2em 2em;
+	#{&}-list{
+		@include flex;
+		margin:1em 0;
+		.footer-item{
+			margin:0px 1em;
+			a>*{
+				@include transition(0.5s);
+				font-size:200%;
+				color:color(primary);
+				&:hover{
+					@include transition(0.5s);
+					color:darken(color(secondary),20%);
+				}
+			}
+		}
+	}
+}
+
